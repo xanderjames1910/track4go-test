@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 // Routes Imports
 import Routes from './routes/Routes';
 
 // CSS Imports
 import './App.css';
-// import './App-desktop.css';
-// import './App-mobile.css';
+import './App-desktop.css';
+import './App-mobile.css';
 
 // Local Imports
-// import MenuBar from './components/layout/MenuBar';
-// import SideMenu from './components/layout/SideMenu';
+import MenuBar from './components/layout/MenuBar';
+import SideMenu from './components/layout/SideMenu';
 
 const App = () => {
 	// Component State
@@ -20,11 +20,11 @@ const App = () => {
 	// Component Functions
 	return (
 		<>
-			{/* <MenuBar setSidebarStatus={setSidebarStatus} />
+			<MenuBar setSidebarStatus={setSidebarStatus} />
 			<SideMenu
 				sidebarStatus={sidebarStatus}
 				setSidebarStatus={setSidebarStatus}
-			/> */}
+			/>
 			<div className='App'>
 				<Switch>
 					<Routes />

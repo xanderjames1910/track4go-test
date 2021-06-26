@@ -1,0 +1,32 @@
+@media (max-width: 767px) {
+	.brand-custom-class {
+		margin-left: 25px;
+	}
+  
+	.menu-toggle-btn {
+		position: absolute;
+		right: 10px;
+		height: 40px;
+		width: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 10px;
+		border: 1px solid var(--primary);
+		color: var(--primary);
+	}
+
+	.side-menu-option {
+		padding: 0.75rem 1.25rem;
+		border: 1px solid rgba(0, 0, 0, 0.125);
+		color: var(--secondary);
+	}
+
+	.side-menu-option-active {
+		background-color: var(--primary) !important;
+		color: #fff !important;
+		font-weight: 600;
+		border-color: none !important;
+		border: none !important;
+	}
+}

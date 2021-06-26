@@ -3,13 +3,13 @@ html {
 }
 
 :root {
-	--primary: #d90012 !important;
+	--primary: #111c55 !important;
 	--secondary: #535353 !important;
 	--secondary-accent: #77000a;
 }
 
 .App {
-	margin-top: 56px;
+	margin-top: 60px;
 }
 
 .noselect {
@@ -54,7 +54,7 @@ li {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	color: var(--secondary-accent);
+	color: var(--primary);
 	font-size: 20px;
 	font-weight: 500;
 }
