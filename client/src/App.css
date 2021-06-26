@@ -1,0 +1,60 @@
+html {
+	scroll-behavior: smooth;
+}
+
+:root {
+	--primary: #d90012 !important;
+	--secondary: #535353 !important;
+	--secondary-accent: #77000a;
+}
+
+.App {
+	margin-top: 56px;
+}
+
+.noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+button,
+div,
+li {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.react-share__ShareButton:focus,
+.react-share__ShareButton:active {
+	outline: 0;
+	box-shadow: none !important;
+}
+
+.loading-container {
+	height: calc(100vh - 56px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--secondary-accent);
+	font-size: 20px;
+	font-weight: 500;
+}
