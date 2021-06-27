@@ -9,7 +9,7 @@ html {
 }
 
 .App {
-	margin-top: 60px;
+	margin-top: 50px;
 }
 
 .noselect {
@@ -57,4 +57,14 @@ li {
 	color: var(--primary);
 	font-size: 20px;
 	font-weight: 500;
+}
+
+.actions-bar {
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+}
+
+td {
+	vertical-align: middle !important;
 }

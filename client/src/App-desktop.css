@@ -16,13 +16,13 @@
 		cursor: pointer;
 	}
 
-  .menu-options-style {
-		margin-left: calc(50% - 100px);
-	}
-
 	.active-nav-link {
 		background-color: var(--primary);
 		font-weight: 500;
 		color: #fff;
+	}
+
+	.home-container {
+		padding: 20px 40px
 	}
 }

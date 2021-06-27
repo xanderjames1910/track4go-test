@@ -44,7 +44,7 @@ const MenuBar = (props) => {
 					<FontAwesomeIcon icon={faBars} style={{ fontSize: '1.3rem' }} />
 				</div>
 				<Navbar.Collapse id='responsive-navbar-nav'>
-					<Nav className='menu-options-style'>
+					<Nav className='justify-content-center' style={{ width: '100%' }}>
 						{menuOptions.map((option, i) => (
 							<LinkContainer
 								to={option.route}
@@ -55,15 +55,6 @@ const MenuBar = (props) => {
 								<div>{option.title}</div>
 							</LinkContainer>
 						))}
-					</Nav>
-					<Nav className='ml-auto'>
-						<LinkContainer
-							to='/login'
-							className='custom-nav-link'
-							activeClassName='active-nav-link'
-						>
-							<div>Ingresar</div>
-						</LinkContainer>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
