@@ -13,7 +13,14 @@ import {
 
 const TableRow = (props) => {
 	// Props Destructuring
-	const { number, user, setModalShow, setUserToEdit } = props;
+	const {
+		number,
+		user,
+		setModalShow,
+		setUserToEdit,
+		setUserToDelete,
+		setShowConfimrationModal,
+	} = props;
 
 	// Component functions
 	const userToEdit = () => {
@@ -25,6 +32,14 @@ const TableRow = (props) => {
 			email: user.email,
 		});
 		setModalShow(true);
+	};
+
+	const setDeleteUser = (id) => {
+		setUserToDelete({
+			_id: id,
+			name: user.name,
+		});
+		setShowConfimrationModal(true);
 	};
 
 	return (
@@ -54,6 +69,7 @@ const TableRow = (props) => {
 						<Dropdown.Item
 							className='d-flex'
 							style={{ color: 'var(--danger)' }}
+							onClick={() => setDeleteUser(user._id)}
 						>
 							<div style={{ width: 30 }} className='mr-1'>
 								<FontAwesomeIcon icon={faTrash} className='mr-2' />

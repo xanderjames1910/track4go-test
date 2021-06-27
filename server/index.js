@@ -21,7 +21,7 @@ app.use(
 db.on('error', console.error.bind(console, 'MongoDb Connection Error:'));
 
 app.get('/', (req, res) => {
-	res.send('Hellor World!');
+	res.send('El Servidor se ha levantado correctamente.');
 });
 
 // Get Users
@@ -42,8 +42,25 @@ app.post('/new-user', (req, res) => {
 
 	newUser
 		.save()
-		.then((user) => console.log(user))
+		.then((user) => res.json(user))
 		.catch((err) => res.status(400).json('Error: ' + err));
+});
+
+// Delete User
+app.delete('/user-delete/:id', (req, res) => {
+	const id = req.params.id;
+
+	User.findOneAndDelete({ _id: id }, (err, user) => {
+		if (err) {
+			return res.status(400).json({ success: false, error: err });
+		}
+
+		if (!user) {
+			return res.status(404).json({ success: false, error: `Movie not found` });
+		}
+
+		return res.status(200).json({ success: true, data: user });
+	}).catch((err) => console.log(err));
 });
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));

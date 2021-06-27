@@ -14,7 +14,7 @@ import ToastifyMessage from '../layout/ToastifyMessage';
 
 const UserModal = (props) => {
 	// Props Destructuring
-	const { currentUser, onHide, show, toast } = props;
+	const { currentUser, onHide, setUsersChange, show, toast } = props;
 
 	// Component State
 	const [user, setUser] = useState({
@@ -34,7 +34,7 @@ const UserModal = (props) => {
 		});
 	}, [currentUser]);
 
-	console.log(user);
+	// console.log(user);
 
 	// Component Functions
 	const handleOnChange = (e) => {
@@ -47,13 +47,17 @@ const UserModal = (props) => {
 	const onSubmit = (e) => {
 		e.preventDefault();
 
-		console.log('Prueba de On Submit');
-		console.log(user);
-
-		axios.post('/new-user', user);
-		toast(<ToastifyMessage icon={faUser} msg='Usuario Creado' />);
-
-		onHide();
+		axios
+			.post('/new-user', user)
+			.then((res) => {
+				setUsersChange(true);
+				toast(<ToastifyMessage icon={faUser} msg='Usuario Creado' />);
+			})
+			.then(() => {
+				setUsersChange(false);
+				onHide();
+			})
+			.catch((err) => console.log(err));
 	};
 
 	return (

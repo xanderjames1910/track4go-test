@@ -17,6 +17,7 @@ const Home = () => {
 		phone: '',
 		email: '',
 	});
+	const [usersChange, setUsersChange] = useState(false);
 
 	// Component Functions
 	const resetUserToEdit = () => {
@@ -44,11 +45,18 @@ const Home = () => {
 				pauseOnHover
 			/>
 			<ActionsBar setModalShow={setModalShow} />
-			<UsersTable setModalShow={setModalShow} setUserToEdit={setUserToEdit} />
+			<UsersTable
+				usersChange={usersChange}
+				setModalShow={setModalShow}
+				setUserToEdit={setUserToEdit}
+				setUsersChange={setUsersChange}
+				toast={toast}
+			/>
 			<UserModal
 				currentUser={userToEdit}
 				show={modalShow}
 				onHide={resetUserToEdit}
+				setUsersChange={setUsersChange}
 				toast={toast}
 			/>
 		</div>
