@@ -15,8 +15,6 @@ const ConfirmationModal = (props) => {
 	// Props Destructuring
 	const { user, onHide, setUsersChange, show, toast } = props;
 
-	// console.log(user);
-
 	// Component Functions
 	const cancelDelte = () => {
 		onHide();
@@ -40,8 +38,6 @@ const ConfirmationModal = (props) => {
 			.then(() => setUsersChange(false))
 			.catch((err) => console.log(err));
 	};
-
-	console.log(user);
 
 	return (
 		<Modal

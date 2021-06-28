@@ -49,7 +49,7 @@ const TableRow = (props) => {
 			<td>{user.cedula}</td>
 			<td>{user.phone}</td>
 			<td>{user.email}</td>
-			<td align='center'>
+			<td align='center' style={{ overflow: 'inherit' }}>
 				<Dropdown>
 					<Dropdown.Toggle variant='primary' id='dropdown-basic' size='sm'>
 						<FontAwesomeIcon icon={faEllipsisH} className='mr-2' />

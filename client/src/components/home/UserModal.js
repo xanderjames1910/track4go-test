@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 // Fontawesome Imports
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 
 // ToastifyMessage Imports
 import ToastifyMessage from '../layout/ToastifyMessage';
@@ -18,6 +18,7 @@ const UserModal = (props) => {
 
 	// Component State
 	const [user, setUser] = useState({
+		id: '',
 		name: '',
 		cedula: '',
 		phone: '',
@@ -27,14 +28,13 @@ const UserModal = (props) => {
 	// Component Hooks
 	useEffect(() => {
 		setUser({
+			id: currentUser._id || '',
 			name: currentUser.name,
 			cedula: currentUser.cedula,
 			phone: currentUser.phone,
 			email: currentUser.email,
 		});
 	}, [currentUser]);
-
-	// console.log(user);
 
 	// Component Functions
 	const handleOnChange = (e) => {
@@ -44,9 +44,7 @@ const UserModal = (props) => {
 		});
 	};
 
-	const onSubmit = (e) => {
-		e.preventDefault();
-
+	const createNewUser = () => {
 		axios
 			.post('/new-user', user)
 			.then((res) => {
@@ -58,6 +56,31 @@ const UserModal = (props) => {
 				onHide();
 			})
 			.catch((err) => console.log(err));
+	};
+
+	const updateUser = (id) => {
+		axios
+			.put('/edit-user/' + id, user)
+			.then((res) => {
+				setUsersChange(true);
+				toast(<ToastifyMessage icon={faUserEdit} msg='Usuario Actualizado' />);
+			})
+			.then(() => {
+				setUsersChange(false);
+				onHide();
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		if (user.id !== '') {
+			console.log('Actualizando Usuario');
+			updateUser(user.id);
+		} else {
+			createNewUser();
+		}
 	};
 
 	return (
@@ -118,7 +141,7 @@ const UserModal = (props) => {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant='primary' type='submit'>
-						{user._id !== undefined ? 'Actualizar Usuario' : 'Crear Usuario'}
+						{user._id !== '' ? 'Actualizar Usuario' : 'Crear Usuario'}
 					</Button>
 				</Modal.Footer>
 			</Form>

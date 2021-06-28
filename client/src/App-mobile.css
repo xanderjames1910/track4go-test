@@ -2,7 +2,7 @@
 	.brand-custom-class {
 		margin-left: 25px;
 	}
-  
+
 	.menu-toggle-btn {
 		position: absolute;
 		right: 10px;
@@ -28,5 +28,9 @@
 		font-weight: 600;
 		border-color: none !important;
 		border: none !important;
+	}
+
+	.table-container {
+		overflow-x: auto;
 	}
 }

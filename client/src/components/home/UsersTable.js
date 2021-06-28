@@ -6,11 +6,12 @@ import Table from 'react-bootstrap/Table';
 
 // Local Imports
 import TableRow from './TableRow';
-import ConfirmatioModal from './ConfirmationModal';
+import ConfirmationModal from './ConfirmationModal';
 
 const UsersTable = (props) => {
 	// Props Destructuring
-	const { setModalShow, setUserToEdit, setUsersChange, toast, usersChange } = props;
+	const { setModalShow, setUserToEdit, setUsersChange, toast, usersChange } =
+		props;
 
 	// Component State
 	const [users, setUsers] = useState([]);
@@ -32,7 +33,7 @@ const UsersTable = (props) => {
 	};
 
 	return (
-		<div>
+		<div className='table-container mx-3'>
 			<Table striped bordered hover size='sm'>
 				<thead>
 					<tr>
@@ -59,7 +60,12 @@ const UsersTable = (props) => {
 						))}
 				</tbody>
 			</Table>
-			<ConfirmatioModal
+			{users.length === 0 && (
+				<div className='text-center' style={{ colose: 'var(--secondary)' }}>
+					No existen registros
+				</div>
+			)}
+			<ConfirmationModal
 				show={showConfirmationModal}
 				onHide={resetUserToDelete}
 				user={userToDelete}

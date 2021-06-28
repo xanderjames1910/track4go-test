@@ -56,11 +56,41 @@ app.delete('/user-delete/:id', (req, res) => {
 		}
 
 		if (!user) {
-			return res.status(404).json({ success: false, error: `Movie not found` });
+			return res
+				.status(404)
+				.json({ success: false, error: `Usuario no encontrado` });
 		}
 
 		return res.status(200).json({ success: true, data: user });
 	}).catch((err) => console.log(err));
+});
+
+// Update User
+app.put('/edit-user/:id', (req, res) => {
+	const updatedUser = {
+		name: req.body.name,
+		cedula: req.body.cedula,
+		phone: req.body.phone,
+		email: req.body.email,
+	};
+
+	User.findByIdAndUpdate(
+		{ _id: req.params.id },
+		{ $set: updatedUser },
+		(err, user) => {
+			if (err) {
+				return res.status(400).json({ success: false, error: err });
+			}
+
+			if (!user) {
+				return res
+					.status(404)
+					.json({ success: false, error: `Usuario no encontrado` });
+			}
+
+			return res.status(200).json({ success: true, data: user });
+		}
+	);
 });
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));

@@ -12,6 +12,7 @@ const Home = () => {
 	// Component useState
 	const [modalShow, setModalShow] = useState(false);
 	const [userToEdit, setUserToEdit] = useState({
+		id: '',
 		name: '',
 		cedula: '',
 		phone: '',
@@ -22,6 +23,7 @@ const Home = () => {
 	// Component Functions
 	const resetUserToEdit = () => {
 		setUserToEdit({
+			id: '',
 			name: '',
 			cedula: '',
 			phone: '',

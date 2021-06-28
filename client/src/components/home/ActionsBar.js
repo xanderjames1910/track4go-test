@@ -28,7 +28,7 @@ const ActionsBar = (props) => {
 				style={{ display: 'flex', borderRadius: 5 }}
 				onClick={() => setModalShow(true)}
 			>
-				<div style={{ width: 30 }} className='mr-2'>
+				<div style={{ width: 30 }} className='mr-md-2 mr-sm-0'>
 					<FontAwesomeIcon icon={faPlus} />
 				</div>
 				Agregar Usuario
