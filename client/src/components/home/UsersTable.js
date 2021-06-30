@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 
 // Bootstrap Imports
 import Table from 'react-bootstrap/Table';
+
+// Redux Imports
+import { fetchUsers } from '../../store/actions/userActions';
 
 // Local Imports
 import TableRow from './TableRow';
@@ -10,27 +13,12 @@ import ConfirmationModal from './ConfirmationModal';
 
 const UsersTable = (props) => {
 	// Props Destructuring
-	const { setModalShow, setUserToEdit, setUsersChange, toast, usersChange } =
-		props;
+	const { allUsers, fetchUsers, usersUpdated } = props;
 
-	// Component State
-	const [users, setUsers] = useState([]);
-	const [userToDelete, setUserToDelete] = useState({});
-	const [showConfirmationModal, setShowConfimrationModal] = useState(false);
-
-	// Component Hooks
 	useEffect(() => {
-		axios
-			.get('/users')
-			.then((res) => setUsers(res.data))
-			.catch((err) => console.log(err));
-	}, [usersChange]);
-
-	// Component Functions
-	const resetUserToDelete = () => {
-		setUserToDelete({});
-		setShowConfimrationModal(false);
-	};
+		fetchUsers();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [usersUpdated]);
 
 	return (
 		<div className='table-container mx-3'>
@@ -46,34 +34,35 @@ const UsersTable = (props) => {
 					</tr>
 				</thead>
 				<tbody>
-					{users !== null &&
-						users.map((user, i) => (
-							<TableRow
-								key={user._id}
-								number={i + 1}
-								user={user}
-								setModalShow={setModalShow}
-								setUserToEdit={setUserToEdit}
-								setUserToDelete={setUserToDelete}
-								setShowConfimrationModal={setShowConfimrationModal}
-							/>
+					{allUsers !== null &&
+						allUsers.map((user, i) => (
+							<TableRow key={user._id} number={i + 1} user={user} />
 						))}
 				</tbody>
 			</Table>
-			{users.length === 0 && (
+			{allUsers.length === 0 && (
 				<div className='text-center' style={{ colose: 'var(--secondary)' }}>
 					No existen registros
 				</div>
 			)}
-			<ConfirmationModal
-				show={showConfirmationModal}
-				onHide={resetUserToDelete}
-				user={userToDelete}
-				setUsersChange={setUsersChange}
-				toast={toast}
-			/>
+			<ConfirmationModal />
 		</div>
 	);
 };
 
-export default UsersTable;
+const mapStateToProps = (state) => {
+	const { allUsers, usersUpdated } = state.user;
+
+	return {
+		allUsers,
+		usersUpdated,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchUsers: () => dispatch(fetchUsers()),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

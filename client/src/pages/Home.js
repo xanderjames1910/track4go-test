@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // Local Imports
 import ActionsBar from '../components/home/ActionsBar';
@@ -6,32 +6,9 @@ import UsersTable from '../components/home/UsersTable';
 import UserModal from '../components/home/UserModal';
 
 // Toastify Notifications
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 const Home = () => {
-	// Component useState
-	const [modalShow, setModalShow] = useState(false);
-	const [userToEdit, setUserToEdit] = useState({
-		id: '',
-		name: '',
-		cedula: '',
-		phone: '',
-		email: '',
-	});
-	const [usersChange, setUsersChange] = useState(false);
-
-	// Component Functions
-	const resetUserToEdit = () => {
-		setUserToEdit({
-			id: '',
-			name: '',
-			cedula: '',
-			phone: '',
-			email: '',
-		});
-		setModalShow(false);
-	};
-
 	return (
 		<div className='home-container'>
 			<ToastContainer
@@ -46,21 +23,9 @@ const Home = () => {
 				draggable
 				pauseOnHover
 			/>
-			<ActionsBar setModalShow={setModalShow} />
-			<UsersTable
-				usersChange={usersChange}
-				setModalShow={setModalShow}
-				setUserToEdit={setUserToEdit}
-				setUsersChange={setUsersChange}
-				toast={toast}
-			/>
-			<UserModal
-				currentUser={userToEdit}
-				show={modalShow}
-				onHide={resetUserToEdit}
-				setUsersChange={setUsersChange}
-				toast={toast}
-			/>
+			<ActionsBar />
+			<UsersTable />
+			<UserModal />
 		</div>
 	);
 };

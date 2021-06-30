@@ -12,7 +12,8 @@ import storage from 'redux-persist/lib/storage';
 import { PersistGate } from 'redux-persist/integration/react';
 
 // Redux Imports
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 
 // Reducer Imports
@@ -31,12 +32,15 @@ const reduxDevTools =
 const persistConfig = {
 	key: 'root',
 	storage,
-	blacklist: [],
+	blacklist: ['user'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(persistedReducer, reduxDevTools);
+const store = createStore(
+	persistedReducer,
+	compose(applyMiddleware(thunk), reduxDevTools)
+);
 
 const persistor = persistStore(store);
 

@@ -8,7 +8,7 @@ const db = require('./db');
 const User = require('./models/userModel.js');
 
 const app = express();
-const apiPort = 3001;
+const apiPort = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -93,4 +93,6 @@ app.put('/edit-user/:id', (req, res) => {
 	);
 });
 
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));
+app.listen(apiPort, '0.0.0.0', () =>
+	console.log(`Server running on port ${apiPort}`)
+);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 // Bootstrap Imports
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -11,35 +12,32 @@ import {
 	faUserEdit,
 } from '@fortawesome/free-solid-svg-icons';
 
+// Redux Imports
+import {
+	setUserToEdit,
+	setShowConfirmationModal,
+	showUserModal,
+} from '../../store/actions/userActions';
+
 const TableRow = (props) => {
 	// Props Destructuring
 	const {
 		number,
 		user,
-		setModalShow,
 		setUserToEdit,
-		setUserToDelete,
-		setShowConfimrationModal,
+		setShowConfirmationModal,
+		showUserModal,
 	} = props;
 
-	// Component functions
-	const userToEdit = () => {
-		setUserToEdit({
-			_id: user._id,
-			name: user.name,
-			cedula: user.cedula,
-			phone: user.phone,
-			email: user.email,
-		});
-		setModalShow(true);
+	// Component Functions
+	const userToEdit = (user) => {
+		showUserModal();
+		setUserToEdit(user);
 	};
 
-	const setDeleteUser = (id) => {
-		setUserToDelete({
-			_id: id,
-			name: user.name,
-		});
-		setShowConfimrationModal(true);
+	const setDeleteUser = (user) => {
+		setUserToEdit(user);
+		setShowConfirmationModal();
 	};
 
 	return (
@@ -59,7 +57,7 @@ const TableRow = (props) => {
 						<Dropdown.Item
 							className='d-flex'
 							style={{ color: 'var(--primary)' }}
-							onClick={userToEdit}
+							onClick={() => userToEdit(user)}
 						>
 							<div style={{ width: 30 }} className='mr-1'>
 								<FontAwesomeIcon icon={faUserEdit} />
@@ -69,7 +67,7 @@ const TableRow = (props) => {
 						<Dropdown.Item
 							className='d-flex'
 							style={{ color: 'var(--danger)' }}
-							onClick={() => setDeleteUser(user._id)}
+							onClick={() => setDeleteUser(user)}
 						>
 							<div style={{ width: 30 }} className='mr-1'>
 								<FontAwesomeIcon icon={faTrash} className='mr-2' />
@@ -83,4 +81,12 @@ const TableRow = (props) => {
 	);
 };
 
-export default TableRow;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setUserToEdit: (user) => dispatch(setUserToEdit(user)),
+		showUserModal: () => dispatch(showUserModal()),
+		setShowConfirmationModal: () => dispatch(setShowConfirmationModal()),
+	};
+};
+
+export default connect(null, mapDispatchToProps)(TableRow);

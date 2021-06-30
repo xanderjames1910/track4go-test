@@ -1,152 +1,230 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
 // Bootstrap Imports
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-// Fontawesome Imports
-import { faUser, faUserEdit } from '@fortawesome/free-solid-svg-icons';
+// Forms Imports
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-// ToastifyMessage Imports
-import ToastifyMessage from '../layout/ToastifyMessage';
+// Redux Imports
+import {
+	closeUserModal,
+	createNewUser,
+	updateUser,
+} from '../../store/actions/userActions';
+
+// Validation Schema
+const UserValidationSchema = Yup.object().shape({
+	name: Yup.string()
+		.min(6, 'El nombre es demasiado corto')
+		.required('El nombre es requerido'),
+	cedula: Yup.string()
+		.min(6, 'La cédula es demasiado corta')
+		.required('La cédula es requerida'),
+	phone: Yup.number()
+		.min(9, 'El teléfono es demasiado corto')
+		.required('El teléfono es requerida'),
+	email: Yup.string()
+		.email('El email debe ser válido')
+		.required('El email es requerido'),
+});
 
 const UserModal = (props) => {
 	// Props Destructuring
-	const { currentUser, onHide, setUsersChange, show, toast } = props;
+	const {
+		closeUserModal,
+		createNewUser,
+		showCreateUpdateModal,
+		updateUser,
+		userToEdit,
+	} = props;
 
 	// Component State
 	const [user, setUser] = useState({
-		id: '',
+		_id: '',
 		name: '',
 		cedula: '',
 		phone: '',
 		email: '',
 	});
 
-	// Component Hooks
 	useEffect(() => {
-		setUser({
-			id: currentUser._id || '',
-			name: currentUser.name,
-			cedula: currentUser.cedula,
-			phone: currentUser.phone,
-			email: currentUser.email,
-		});
-	}, [currentUser]);
-
-	// Component Functions
-	const handleOnChange = (e) => {
-		setUser({
-			...user,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	const createNewUser = () => {
-		axios
-			.post('/new-user', user)
-			.then((res) => {
-				setUsersChange(true);
-				toast(<ToastifyMessage icon={faUser} msg='Usuario Creado' />);
-			})
-			.then(() => {
-				setUsersChange(false);
-				onHide();
-			})
-			.catch((err) => console.log(err));
-	};
-
-	const updateUser = (id) => {
-		axios
-			.put('/edit-user/' + id, user)
-			.then((res) => {
-				setUsersChange(true);
-				toast(<ToastifyMessage icon={faUserEdit} msg='Usuario Actualizado' />);
-			})
-			.then(() => {
-				setUsersChange(false);
-				onHide();
-			})
-			.catch((err) => console.log(err));
-	};
-
-	const onSubmit = (e) => {
-		e.preventDefault();
-
-		if (user.id !== '') {
-			console.log('Actualizando Usuario');
-			updateUser(user.id);
+		if (userToEdit._id !== '') {
+			setUser({
+				id: userToEdit._id,
+				name: userToEdit.name,
+				cedula: userToEdit.cedula,
+				phone: userToEdit.phone,
+				email: userToEdit.email,
+			});
 		} else {
-			createNewUser();
+			setUser({
+				_id: '',
+				name: '',
+				cedula: '',
+				phone: '',
+				email: '',
+			});
 		}
-	};
+	}, [userToEdit]);
 
 	return (
-		<Modal
-			show={show}
-			onHide={onHide}
-			aria-labelledby='add-user-modal'
-			centered
+		<Formik
+			initialValues={user}
+			enableReinitialize
+			validationSchema={UserValidationSchema}
+			onSubmit={async (values, actions) => {
+				if (user._id !== '') {
+					await updateUser(user.id, values);
+					actions.resetForm({ values: user });
+				} else {
+					await createNewUser(values);
+					actions.resetForm({ values: user });
+				}
+			}}
 		>
-			<Modal.Header closeButton>
-				<Modal.Title id='add-user-modal'>Agregar Usuario</Modal.Title>
-			</Modal.Header>
-			<Form onSubmit={onSubmit} noValidate>
-				<Modal.Body>
-					<Form.Group controlId='name'>
-						<Form.Label>Nombre</Form.Label>
-						<Form.Control
-							type='text'
-							name='name'
-							value={user.name}
-							placeholder='Ingrese el nombre del usuario'
-							onChange={handleOnChange}
-						/>
-					</Form.Group>
+			{({
+				handleSubmit,
+				handleChange,
+				handleReset,
+				values,
+				touched,
+				errors,
+			}) => (
+				<Modal
+					show={showCreateUpdateModal}
+					onHide={() => {
+						closeUserModal();
+						handleReset();
+					}}
+					aria-labelledby='add-user-modal'
+					centered
+				>
+					<Modal.Header closeButton>
+						<Modal.Title id='add-user-modal'>Agregar Usuario</Modal.Title>
+					</Modal.Header>
+					{/* <Form onSubmit={onSubmit} noValidate> */}
+					<Form onSubmit={handleSubmit} noValidate>
+						<Modal.Body>
+							<Form.Group
+								controlId='name'
+								className={touched.name && !!errors.name ? 'mb-1' : 'mb-3'}
+							>
+								<Form.Label>Nombre</Form.Label>
+								<Form.Control
+									type='text'
+									name='name'
+									value={values.name}
+									placeholder='Ingrese el nombre del usuario'
+									// onChange={handleOnChange}
+									onChange={handleChange}
+									isInvalid={touched.name && !!errors.name}
+								/>
+								<Form.Control.Feedback
+									type='invalid'
+									style={{ paddingLeft: 10 }}
+								>
+									{touched.name && !!errors.name && errors.name}
+								</Form.Control.Feedback>
+							</Form.Group>
 
-					<Form.Group controlId='cedula'>
-						<Form.Label>Cédula</Form.Label>
-						<Form.Control
-							type='text'
-							name='cedula'
-							value={user.cedula}
-							placeholder='Cédula'
-							onChange={handleOnChange}
-						/>
-					</Form.Group>
+							<Form.Group
+								controlId='cedula'
+								className={touched.cedula && !!errors.cedula ? 'mb-1' : 'mb-3'}
+							>
+								<Form.Label>Cédula</Form.Label>
+								<Form.Control
+									type='text'
+									name='cedula'
+									value={values.cedula}
+									placeholder='Cédula'
+									// onChange={handleOnChange}
+									onChange={handleChange}
+									isInvalid={touched.cedula && !!errors.cedula}
+								/>
+								<Form.Control.Feedback
+									type='invalid'
+									style={{ paddingLeft: 10 }}
+								>
+									{touched.cedula && !!errors.cedula && errors.cedula}
+								</Form.Control.Feedback>
+							</Form.Group>
 
-					<Form.Group controlId='phone'>
-						<Form.Label>Teléfono</Form.Label>
-						<Form.Control
-							type='number'
-							name='phone'
-							value={user.phone}
-							placeholder='Teléfono'
-							onChange={handleOnChange}
-						/>
-					</Form.Group>
+							<Form.Group
+								controlId='phone'
+								className={touched.phone && !!errors.phone ? 'mb-1' : 'mb-3'}
+							>
+								<Form.Label>Teléfono</Form.Label>
+								<Form.Control
+									type='number'
+									name='phone'
+									value={values.phone}
+									placeholder='Teléfono'
+									// onChange={handleOnChange}
+									onChange={handleChange}
+									isInvalid={touched.phone && !!errors.phone}
+								/>
+								<Form.Control.Feedback
+									type='invalid'
+									style={{ paddingLeft: 10 }}
+								>
+									{touched.phone && !!errors.phone && errors.phone}
+								</Form.Control.Feedback>
+							</Form.Group>
 
-					<Form.Group controlId='email'>
-						<Form.Label>Email</Form.Label>
-						<Form.Control
-							type='email'
-							name='email'
-							value={user.email}
-							placeholder='Email'
-							onChange={handleOnChange}
-						/>
-					</Form.Group>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant='primary' type='submit'>
-						{user._id !== '' ? 'Actualizar Usuario' : 'Crear Usuario'}
-					</Button>
-				</Modal.Footer>
-			</Form>
-		</Modal>
+							<Form.Group
+								controlId='email'
+								className={touched.email && !!errors.email ? 'mb-1' : 'mb-3'}
+							>
+								<Form.Label>Email</Form.Label>
+								<Form.Control
+									type='email'
+									name='email'
+									value={values.email}
+									placeholder='Email'
+									// onChange={handleOnChange}
+									onChange={handleChange}
+									isInvalid={touched.email && !!errors.email}
+								/>
+								<Form.Control.Feedback
+									type='invalid'
+									style={{ paddingLeft: 10 }}
+								>
+									{touched.email && !!errors.email && errors.email}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button variant='primary' type='submit'>
+								{user._id !== '' ? 'Actualizar Usuario' : 'Crear Usuario'}
+							</Button>
+						</Modal.Footer>
+					</Form>
+				</Modal>
+			)}
+		</Formik>
 	);
 };
 
-export default UserModal;
+const mapStateToProps = (state) => {
+	const { showCreateUpdateModal, userToEdit } = state.user;
+
+	return {
+		showCreateUpdateModal,
+		userToEdit,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		closeUserModal: () => dispatch(closeUserModal()),
+		createNewUser: (user) => dispatch(createNewUser(user)),
+		updateUser: (id, user) => dispatch(updateUser(id, user)),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserModal);
