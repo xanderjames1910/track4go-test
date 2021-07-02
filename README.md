@@ -35,9 +35,10 @@ Mi nombre es **Jimmy Montes** y estaré gustoso de contestar sus inquietudes
 | Tipo de contacto | Dar click |
 | ------ | ------ |
 | WhatsApp | [Escríbeme a WhatasApp](https://api.whatsapp.com/send?phone=593963101689&text=Hola,%20te%20escribo%20porque%20vi%20tu%20repositorio%20de%20GitHub%20y%20me%20gustar%C3%ADa....) |
-| Teléfono | [Mi teléfono](tel:+593963101689) |
+| Teléfono | [Mi teléfono](https://link-to-tel.herokuapp.com/tel/%2B593963101689) |
 | Email | [xanderjames1910@gmail.com](mailto:xanderjames1910@gmail.com) |
 | Facebook | [xanderjames1910](https://www.facebook.com/xanderjames1910) |
+
 
 > **NOTA:** También trabjo con Flutter para desarrollo Web, móvil y de escritorio y me gusta la rápidez con la que se levanta un Back-End con Firebase.
 
