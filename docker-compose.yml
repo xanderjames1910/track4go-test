@@ -1,0 +1,30 @@
+version: "3"
+services: 
+  react-app:
+    image: track4go-client
+    ports:
+      - "9000:3000"
+    networks:
+      - track4go-app
+  api-server:
+    image: track4go-server
+    ports:
+      - "9001:3001"
+    networks:
+      - track4go-app
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27017:27017"
+    networks:
+      - track4go-app
+    volumes:
+      - mongo-data:/data/db
+networks:
+  track4go-app:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local

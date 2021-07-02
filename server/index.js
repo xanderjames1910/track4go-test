@@ -94,5 +94,5 @@ app.put('/edit-user/:id', (req, res) => {
 });
 
 app.listen(apiPort, '0.0.0.0', () =>
-	console.log(`Server running on port ${apiPort}`)
+	console.log('Server up and running')
 );
